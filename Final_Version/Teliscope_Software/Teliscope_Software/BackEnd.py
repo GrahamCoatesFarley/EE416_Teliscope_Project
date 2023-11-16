@@ -72,7 +72,8 @@ def Setup_Uart_port(tk):
     
     port = GetPort(tk)                                    # Gets port information
     ser = serial.Serial(port, 115200, timeout= None)    # Sets up the serial COM
-    
+    print("Com port established")
+
     return ser                                          # Returns serial class
 
 
@@ -81,20 +82,34 @@ def Uart_Tx(ser, x_ang, y_ang):
     H_data = angle_to_TX_data(x_ang)                # Convert to data and send data through Uart
     V_data = angle_to_TX_data(y_ang)                # Convert to data and send data through Uart
 
-    ser.write(H_data.to_bytes(2, "big"))	        # sends Horizontial data
-    #ser.write(H_data)	                            # sends Horizontial data
+    ser.write(H_data)
     ser.write('h'.encode('ascii'))                  # Notifies Board that data sent is horizontial
     
     time.sleep(.005)                                # waits 5ms before sending Vertical data 
     
-    ser.write(V_data.to_bytes(2, "big"))	        # sends Vertical data
-    #ser.write(V_data)	                            # sends Vertical data
+    ser.write(V_data)	                            # sends Vertical data
     ser.write('v'.encode('ascii'))                  # Notifies the hardware that vertial data was sent
 
 # Function for closing Uart connection
 def Close_Uart(serial):
     serial.close()                                      # Closes connection
 
+
+def GetKeys(D):
+    keys = []
+    for key in D.keys():
+        keys.append(key)
+
+    return keys
+
+def FixNullVal(dict, keys):
+    for keys in dict:
+        if dict[keys] == '':
+            dict[keys] = 1
+    if dict["Year"] == 1:
+        dict["Year"] = int(datetime.now().strftime("%Y"))
+
+    return dict
 
 # Funtion user for data validation
 # returns system presets and comand angles 
@@ -156,14 +171,18 @@ def Input_Validation(UserData, CU_GPS):
     else:   # runs if user selects Clarkson's GPS
         location = CU_GPS   # Sets location to Clarksons Coordinates
 
+    print("Location: " + str(location))
 
     # Validates the provided time
     if UserData["Current_time"] == False:   # makes sure that the time provided is correct 
-        date_time = datetime.replace(minute=UserData["Min"], hour=UserData["Hour"], second=UserData["Sec"], year=UserData["Year"], month=UserData["Month"], day=1)
+        date_time = datetime.now()  # sets date_time to current time 
+
+        date_time = date_time.replace(minute=UserData["Min"], hour=UserData["Hour"], second=UserData["Sec"], year=UserData["Year"], month=UserData["Month"], day=UserData["Day"])
     
     else:
         date_time = datetime.now()  # sets date_time to current time 
 
+    print("Date and time: " + str(date_time))
 
     # Validation for user angles 
     if UserData["Ang_active"]:

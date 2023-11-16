@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>Teliscope_Software</Name>
     <RootNamespace>Teliscope_Software</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>

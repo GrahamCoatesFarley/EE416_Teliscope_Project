@@ -5,21 +5,10 @@ from BackEnd import *
 from datetime import datetime
 import tkinter as tk
 
+date_time = datetime.now()                                          # Current time 
+CU_locat = [44.6636819, -74.997711, 143]   
 
-yearMin = int(datetime.now().strftime("%Y"))- 3
-yearMax = yearMin + 7
-year = list(range(yearMin, yearMax))
-print(year)
-
-
-
-#GetPort(tk)
-i=0
-while True:
-    i = i+1
-    time = datetime.now()
-    print("Time now: ", datetime.now())
-    print("Time sec: ", datetime.now().strftime("%S"))
-    
-    if i == 5:
-        break
+# Getting planets postion
+(x, y) = GetPlanetAngles("sun",date_time, CU_locat)
+print("Suns Horizontial postition: " + str(x))
+print("Suns Vertical postition: " + str(y))

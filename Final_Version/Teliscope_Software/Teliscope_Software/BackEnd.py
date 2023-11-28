@@ -171,7 +171,7 @@ def Input_Validation(UserData, CU_GPS):
     else:   # runs if user selects Clarkson's GPS
         location = CU_GPS   # Sets location to Clarksons Coordinates
 
-    print("Location: " + str(location))
+    #print("Location: " + str(location))
 
     # Validates the provided time
     if UserData["Current_time"] == False:   # makes sure that the time provided is correct 
@@ -182,7 +182,7 @@ def Input_Validation(UserData, CU_GPS):
     else:
         date_time = datetime.now()  # sets date_time to current time 
 
-    print("Date and time: " + str(date_time))
+    #print("Date and time: " + str(date_time))
 
     # Validation for user angles 
     if UserData["Ang_active"]:
@@ -213,7 +213,7 @@ def Input_Validation(UserData, CU_GPS):
         # checks if planet is valid and returns angles 
         (valid, X_ang, Y_ang) = Planet_Valid(UserData["Planet"], date_time, location)
         if valid == False:
-            return (False, 0, 0)
+            return (False, X_ang, Y_ang)
 
     return(True,  X_ang, Y_ang)
 
@@ -223,11 +223,11 @@ def Planet_Valid(planet, date_time, location):
     if Angle_Valid(0, 90, Y_ang) == False:
         # Display pop up window saying vertical angle is false
         ErrorMbox("Validation Failed", "Planet not in operation range")
-        return (False, 0, 0)    # Validation failed
+        return (False, X_ang, Y_ang)    # Validation failed
 
     if Angle_Valid(0, 360, X_ang) == False:
         # Display pop up window saying Horizontial angle is false
         ErrorMbox("Validation Failed", "Planet not in operation range")
-        return (False, 0, 0)    # Validation failed
+        return (False, X_ang, Y_ang)    # Validation failed
 
     return(True, X_ang, Y_ang)
